@@ -1,6 +1,7 @@
 package eu.oberon.oss.chess.pgn.parser.tokens.tags;
 
 import eu.oberon.oss.chess.pgn.parser.InvalidTokenValueException;
+import eu.oberon.oss.chess.pgn.parser.tokens.AbstractPgnToken;
 import eu.oberon.oss.chess.pgn.parser.tokens.PgnToken;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -25,7 +26,7 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  */
 @Log4j2
-public class StandardTagToken<T> implements PgnToken<T> {
+public class StandardTagToken<T> extends AbstractPgnToken<T> {
     private static final Properties DEFAULT_PREFERRED_TAG_NAMES = new Properties();
 
     static {
@@ -53,9 +54,6 @@ public class StandardTagToken<T> implements PgnToken<T> {
 
     @Getter
     private final String tagName;
-
-    @Getter
-    private final T tokenValue;
 
     /**
      * Creates a new PGN token that has a payload of type {@link String}
@@ -89,22 +87,18 @@ public class StandardTagToken<T> implements PgnToken<T> {
         if (tagName.isEmpty()) {
             throw new IllegalArgumentException("Invalid tag name: '" + tagName + "'");
         }
-
+        super(tagValue, validator, converter);
+        
         String preferredName  = DEFAULT_PREFERRED_TAG_NAMES.getProperty(tagName.toLowerCase());
                 
-        if (!validator.test(tagValue)) {
-            throw new InvalidTokenValueException(getClass().getSimpleName(), tagValue, tagName);
-        }
-
         if (preferredName == null) {
             LOGGER.warn("No preferred formatted tag name found, using user provided name: {}", tagName);
         }
         this.tagName = preferredName == null ? tagName : preferredName;
-        this.tokenValue = converter.apply(tagValue);
     }
 
     @Override
     public String toString() {
-        return "[" + tagName + " \"" + tokenValue + "\"]";
+        return "[" + tagName + " \"" + getTokenValue() + "\"]";
     }
 }
