@@ -15,7 +15,7 @@ public class MoveNumberToken implements PgnToken<Integer> {
         if (!matcher.matches()) {
             throw new InvalidTokenValueException("Move number", tagValue);
         }
-        indicatesBlackMove = matcher.group(1) == null || matcher.group(1).length() > 1 ;
+        indicatesBlackMove = matcher.group(2) == null || matcher.group(2).length() > 1 ;
         this.tagValue = Integer.parseInt(matcher.group(1));
     }
 
