@@ -81,6 +81,7 @@ public class PgnParser {
 
         PGNFormatParser parser = new PGNFormatParser(commonTokenStream);
         parser.removeErrorListeners();
+        parser.addErrorListener(new ErrorHandler(builder));
 
         ParseTree parseTree = parser.parse();
         ParseTreeWalker walker = new ParseTreeWalker();

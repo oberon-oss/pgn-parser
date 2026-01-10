@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +18,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class PgnParserTest {
 
 
+    public static Stream<Arguments> testWithInvalidData() {
+        return Stream.of(
+                Arguments.of("game-with-syntax error.pgn")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testWithInvalidData(String resourceName) {
+        assertThrows(Exception.class, () -> PgnParser.parsePGNData(loadTestData(resourceName)));
+    }
+    
     public static Stream<Arguments> testWithValidData() {
         return Stream.of(
                 Arguments.of("valid-game-1.pgn", 446, 6),
-                Arguments.of("valid-game-2.pgn", 88, 10)
+                Arguments.of("valid-game-2.pgn", 88, 10),
+                Arguments.of("valid-game-3.pgn", 78, 15)
         );
     }
 
@@ -67,6 +79,9 @@ class PgnParserTest {
 
     private String loadTestData(String resourceName) {
         try (InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(resourceName)) {
+            if (inputStream == null) {
+                throw new IllegalStateException();
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             return reader.readAllAsString();
         } catch (IOException e) {

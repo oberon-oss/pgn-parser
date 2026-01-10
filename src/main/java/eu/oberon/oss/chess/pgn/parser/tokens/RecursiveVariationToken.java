@@ -7,7 +7,7 @@ public class RecursiveVariationToken extends AbstractPgnToken<Integer> {
     private final boolean isLeaving;
 
     public RecursiveVariationToken(int depth, boolean isLeaving) {
-        super(depth, integer -> integer != null && integer >= 0);
+        super(depth, integer -> integer >= 0);
         this.isLeaving = isLeaving;
     }
 

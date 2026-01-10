@@ -9,7 +9,8 @@ import java.util.EnumMap;
 
 import static eu.oberon.oss.chess.pgn.parser.enums.Type.NO_PIECE;
 
-public class FENTagStringGenerator implements FENStringGenerator<FENTagDetails> {
+public class PGNFENTagStringGenerator implements FENStringGenerator<FENTagDetails> {
+    
     @Override
     public String generateFENString(FENTagDetails source) {
         return writePositionData(source.getPosition()) +
@@ -29,7 +30,7 @@ public class FENTagStringGenerator implements FENStringGenerator<FENTagDetails> 
         sb.append(details.isWhiteCanCastleKingSide() ? "K" : "");
         sb.append(details.isWhiteCanCastleQueenSide() ? "Q" : "");
         sb.append(details.isBlackCanCastleKingSide() ? "k" : "");
-        sb.append(details.isBlackCanCastleKingSide() ? "q" : "");
+        sb.append(details.isBlackCanCastleQueenSide() ? "q" : "");
         if (sb.length() == currentLength) {
             sb.append("-");
         }
@@ -64,5 +65,5 @@ public class FENTagStringGenerator implements FENStringGenerator<FENTagDetails> 
         }
         return sb.toString();
     }
-
+    
 }

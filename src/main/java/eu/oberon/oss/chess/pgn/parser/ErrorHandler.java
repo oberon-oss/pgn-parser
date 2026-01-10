@@ -2,14 +2,12 @@ package eu.oberon.oss.chess.pgn.parser;
 
 import eu.oberon.oss.chess.pgn.parser.PgnParseResult.PgnParseResultBuilder;
 import lombok.extern.log4j.Log4j2;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
-
-import java.util.BitSet;
+import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
 
 @Log4j2
-public class ErrorHandler implements ANTLRErrorListener {
+public class ErrorHandler extends  BaseErrorListener {
     private final PgnParseResultBuilder builder;
 
     public ErrorHandler(PgnParseResultBuilder builder) {
@@ -25,41 +23,6 @@ public class ErrorHandler implements ANTLRErrorListener {
                                   .line(line)
                                   .offset(offset)
                                   .exception(e)
-                                  .build()
-        );
-    }
-
-    @Override
-    public void reportAmbiguity(Parser parser, DFA dfa, int line, int offset, boolean b, BitSet bitSet, ATNConfigSet atnConfigSet) {
-        Token ct = parser.getCurrentToken();
-        builder.addMessage(
-                PgnParseLogMessage.builder()
-                                  .messageType(PgnParseLogMessage.MessageType.REPORT_AMBIGUITY)
-                                  .line(ct.getLine())
-                                  .offset(ct.getCharPositionInLine())
-                                  .build()
-        );
-    }
-
-    @Override
-    public void reportAttemptingFullContext(Parser parser, DFA dfa, int line, int offset, BitSet bitSet, ATNConfigSet atnConfigSet) {
-        Token ct = parser.getCurrentToken();
-        builder.addMessage(
-                PgnParseLogMessage.builder()
-                                  .messageType(PgnParseLogMessage.MessageType.REPORT_ATTEMPTING_FULL_CONTEXT)
-                                  .line(ct.getLine())
-                                  .offset(ct.getCharPositionInLine())
-                                  .build()
-        );
-    }
-
-    @Override
-    public void reportContextSensitivity(Parser parser, DFA dfa, int line, int offset, int i2, ATNConfigSet atnConfigSet) {
-        builder.addMessage(
-                PgnParseLogMessage.builder()
-                                  .messageType(PgnParseLogMessage.MessageType.REPORT_CONTEXT_SENSITIVITY)
-                                  .line(line)
-                                  .offset(offset)
                                   .build()
         );
     }

@@ -37,18 +37,17 @@ public class StandardTagToken<T> extends AbstractPgnToken<T> {
         }
     }
 
-    private static final Pattern VALID_TAG_VALUE = Pattern.compile("^(.*)$");
+    private static final Pattern VALID_TAG_VALUE = Pattern.compile("^(.+)$");
 
     private static final Predicate<String> DEFAULT_VALIDATOR = string -> {
         Matcher matcher = VALID_TAG_VALUE.matcher(string);
-        return matcher.matches() && !matcher.group(1).isEmpty();
+        return matcher.matches() && !matcher.group(1).isBlank();
     };
 
     private static final Function<String, ?> DEFAULT_CONVERTER = string -> {
         Matcher matcher = VALID_TAG_VALUE.matcher(string);
-        if (!matcher.matches()) {
-            throw new IllegalStateException();
-        }
+        //noinspection ResultOfMethodCallIgnored - The parent class will run the validator before calling the converter.
+        matcher.matches();
         return matcher.group(1);
     };
 
@@ -84,7 +83,7 @@ public class StandardTagToken<T> extends AbstractPgnToken<T> {
      * @since 1.0.0
      */
     protected StandardTagToken(String tagName, String tagValue, Predicate<String> validator, Function<String, T> converter) {
-        if (tagName.isEmpty()) {
+        if (tagName.isBlank()) {
             throw new IllegalArgumentException("Invalid tag name: '" + tagName + "'");
         }
         super(tagValue, validator, converter);

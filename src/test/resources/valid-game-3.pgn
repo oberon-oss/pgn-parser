@@ -1,0 +1,20 @@
+[Event "Test event 1"]
+[White "Computer-white"]
+[Black "Computer-black"]
+[Site "Junit6"]
+[Round "1"]
+[Result "1-0"]
+[Date "2026-01-07"]
+[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w QKqk - 0 0"]
+[Setup "1"]
+[WhiteElo "2305"]
+[WhiteUSCF "2504"]
+[BlackElo "2350"]
+[BlackUSCF "2504"]
+[ECO "B25"]
+[NIC "KI"
+
+1.e4? c5! 2.Nc3?! d6!? 3.Nf3?? Nf6 4.g3 Nc6 5.Bg2 g6 6.O-O Bg7 7.d3 O-O 8.Nh4 Ne8
+9.f4 f5 10.Be3 Rb8 11.Qd2 Qa5 12.h3 Nd4 13.a4 Bd7 14.Kh2 Nc7 15.Qc1 Na6 16.Bd2 Qd8
+17.Nf3 Nb4 18.Ne1 e6 19.Qd1 Qe8 20.Ra3 b6  1/2-1/2
+

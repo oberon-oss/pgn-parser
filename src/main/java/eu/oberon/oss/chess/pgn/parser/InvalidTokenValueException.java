@@ -11,13 +11,4 @@ public class InvalidTokenValueException extends RuntimeException {
         );
     }
 
-    public InvalidTokenValueException(String elementName, String elementValue, String tagname) {
-        super(String.format(
-                        "Invalid element value for element type %s (%s): %s",
-                        elementName,
-                        tagname,
-                        elementValue == null ? "<null>" : "'" + elementValue + "'"
-                )
-        );
-    }
 }

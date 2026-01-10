@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
+import java.util.Map;
 
 @Log4j2
 class PgnProcessor extends PGNFormatBaseListener {
@@ -38,7 +39,7 @@ class PgnProcessor extends PGNFormatBaseListener {
 
     //====================================== TAGS
 
-    
+
     @Override
     public void exitTagPair(PGNFormatParser.TagPairContext ctx) {
         super.exitTagPair(ctx);
@@ -83,16 +84,34 @@ class PgnProcessor extends PGNFormatBaseListener {
         builder.addElement(new MoveNumberToken(ctx.getText()));
     }
 
+    private static final Map<String, String> SUFFIX_TO_NAG_MAPPING = Map.of(
+            "!", "$1",
+            "?", "$2",
+            "!!", "$3",
+            "??", "$4",
+            "!?", "$5",
+            "?!", "$1"
+    );
+
     @Override
     public void exitSuffix(PGNFormatParser.SuffixContext ctx) {
         super.exitSuffix(ctx);
-        LOGGER.info("SUFFIX: {}", ctx.getText());
+        String suffix = ctx.getText();
+        String nagCode = SUFFIX_TO_NAG_MAPPING.get(suffix);
+        builder.addMessage(
+                new PgnParseLogMessage(
+                        PgnParseLogMessage.MessageType.USER_NOTIFICATION,
+                        ctx.start.getLine(), ctx.start.getCharPositionInLine(),
+                        String.format("Replacing suffix '%s' with NAG '%s'", suffix, nagCode),
+                        null
+                )
+        );
     }
 
     @Override
     public void exitSanMove(PGNFormatParser.SanMoveContext ctx) {
         super.exitSanMove(ctx);
-        builder.addElement(new SanMoveToken(ctx.getText()));
+        builder.addElement(new SanMoveToken(ctx.SYMBOL().getText()));
     }
 
     @Override

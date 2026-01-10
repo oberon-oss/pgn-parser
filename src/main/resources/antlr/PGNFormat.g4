@@ -168,7 +168,7 @@ SYMBOL
  ;
 
 SUFFIX_ANNOTATION
- : [?!] [?!]?
+ : [\\?!] [\\?!]?
  ;
 
 UNEXPECTED_CHAR
